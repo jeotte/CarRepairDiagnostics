@@ -3,6 +3,7 @@ package com.ubiquisoft.evaluation.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,21 +18,35 @@ public class Car {
 	private List<Part> parts;
 
 	public Map<PartType, Integer> getMissingPartsMap() {
-		/*
-		 * Return map of the part types missing.
-		 *
-		 * Each car requires one of each of the following types:
-		 *      ENGINE, ELECTRICAL, FUEL_FILTER, OIL_FILTER
-		 * and four of the type: TIRE
-		 *
-		 * Example: a car only missing three of the four tires should return a map like this:
-		 *
-		 *      {
-		 *          "TIRE": 3
-		 *      }
-		 */
+		Map<PartType, Integer> missingParts = new HashMap<>();
 
-		return null;
+		// If the list of parts doesn't contain 'Engine', add it to the map of missing parts
+		if (!parts.stream().anyMatch(p->p.getType().equals(PartType.ENGINE))) {
+			missingParts.put(PartType.ENGINE, 1);
+		}
+
+		// If the list of parts doesn't contain 'Electrical', add it to the map of missing parts
+		if (!parts.stream().anyMatch(p->p.getType().equals(PartType.ELECTRICAL))) {
+			missingParts.put(PartType.ELECTRICAL, 1);
+		}
+
+		// If the list of parts doesn't contain 'Fuel Filter', add it to the map of missing parts
+		if (!parts.stream().anyMatch(p->p.getType().equals(PartType.FUEL_FILTER))) {
+			missingParts.put(PartType.FUEL_FILTER, 1);
+		}
+
+		// If the list of parts doesn't contain 'Oil Filter', add it to the map of missing parts
+		if (!parts.stream().anyMatch(p->p.getType().equals(PartType.OIL_FILTER))) {
+			missingParts.put(PartType.OIL_FILTER, 1);
+		}
+
+		// If the list of parts doesn't contain 4 'Tires', add it to the map of missing parts
+		long countOfTires = parts.stream().filter(p->p.getType().equals(PartType.TIRE)).count();
+		if (countOfTires != 4) {
+			missingParts.put(PartType.TIRE, (int)(4-countOfTires));
+		}
+
+		return missingParts;
 	}
 
 	@Override

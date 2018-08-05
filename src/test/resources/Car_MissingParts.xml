@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<car>
+    <year>2006</year>
+    <make>Ford</make>
+    <model>Explorer</model>
+    <parts>
+        <inventoryId>engine</inventoryId>
+        <type>ENGINE</type>
+        <condition>NEW</condition>
+    </parts>
+    <parts>
+        <inventoryId>electrical</inventoryId>
+        <type>ELECTRICAL</type>
+        <condition>NEW</condition>
+    </parts>
+    <parts>
+        <inventoryId>tire</inventoryId>
+        <type>TIRE</type>
+        <condition>NEW</condition>
+    </parts>
+    <parts>
+        <inventoryId>tire</inventoryId>
+        <type>TIRE</type>
+        <condition>NEW</condition>
+    </parts>
+    <parts>
+        <inventoryId>tire</inventoryId>
+        <type>TIRE</type>
+        <condition>NEW</condition>
+    </parts>
+    <parts>
+        <inventoryId>tire</inventoryId>
+        <type>TIRE</type>
+        <condition>NEW</condition>
+    </parts>
+</car>

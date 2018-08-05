@@ -9,6 +9,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CarDiagnosticEngine {
 
@@ -39,7 +42,52 @@ public class CarDiagnosticEngine {
 		 * console output is as least as informative as the provided methods.
 		 */
 
+		// Step 1: Validate the 3 data fields
+		boolean isValid = true;
+		if (car.getMake() == null || car.getMake() == "") {
+			System.out.println("The make of the car is missing.");
+			isValid = false;
+		}
 
+		if (car.getModel() == null || car.getModel() == "") {
+			System.out.println("The model of the car is missing.");
+			isValid = false;
+		}
+
+		if (car.getYear() == null || car.getYear() == "") {
+			System.out.println("The year of the car is missing.");
+			isValid = false;
+		}
+
+		// If validation fails, end early
+		if (!isValid) {
+			return;
+		}
+
+		// Step 2: Validate no parts are missing. If there are missing parts, print the message and exit
+		Map<PartType, Integer> missingParts = car.getMissingPartsMap();
+		if (!missingParts.isEmpty()) {
+			missingParts.forEach((partType, count) -> printMissingPart(partType, count));
+
+			// Validation failed, end early
+			return;
+		}
+
+		// Step 3: Validate no parts are damage (condition other than New, Good, or Worn)
+		List<Part> damagedParts = car.getParts().stream().filter(p-> {
+			return !(p.getCondition().equals(ConditionType.NEW) || p.getCondition().equals(ConditionType.GOOD)
+					|| p.getCondition().equals(ConditionType.WORN));
+		}).collect(Collectors.toList());
+		if (!damagedParts.isEmpty()) {
+			damagedParts.forEach(p->printDamagedPart(p.getType(), p.getCondition()));
+
+			// Validation failed, end early
+			return;
+		}
+
+		// Step 4: Validation succeeded, print message to the user
+		System.out.println(String.format("The %s %s %s has passed diagnostic validation.",
+				car.getYear(), car.getModel(), car.getMake()));
 	}
 
 	private void printMissingPart(PartType partType, Integer count) {
